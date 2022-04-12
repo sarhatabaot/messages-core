@@ -52,11 +52,6 @@ public class GenerateMojo extends AbstractMojo {
     private String targetPackage;
 
 
-    /**
-     * The Maven BuildPluginManager component.
-     */
-    @Component
-    private BuildPluginManager pluginManager;
     private static final String BASE_PATH = "src"+File.separator+"main"+File.separator+"java"+File.separator;
 
     public void execute() throws MojoExecutionException {
@@ -95,15 +90,18 @@ public class GenerateMojo extends AbstractMojo {
 
             //root element
             JsonElement rootElement = JsonParser.parseReader(reader);
-            getLog().info(rootElement.toString());
+            getLog().debug(rootElement.toString());
             for(Map.Entry<String, JsonElement> entrySet: rootElement.getAsJsonObject().entrySet() ) {
                 if(entrySet.getValue().isJsonPrimitive()) {
                     writePrimitiveString(fileWriter,entrySet,"\t");
+                    fileWriter.write("\n");
                 } else {
                     final String innerClassName = Util.getAsClassName(entrySet.getKey());
                     fileWriter.write("\t public static class "+innerClassName +" {");
+                    fileWriter.write("\n");
                     for(Map.Entry<String, JsonElement> elementSet: entrySet.getValue().getAsJsonObject().entrySet()) {
                         writePrimitiveString(fileWriter,elementSet,"\t\t");
+                        fileWriter.write("\n");
                     }
                     fileWriter.write("}");
                 }
