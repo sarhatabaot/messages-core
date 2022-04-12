@@ -3,13 +3,18 @@ package com.github.sarhatabaot;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,6 +23,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
+
+import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
+import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 
 /**
  * This goal aims to generate a static accessor class
@@ -42,6 +51,35 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(required = true, property = "jtj.targetpackage") //target should be a package
     private String targetPackage;
 
+    /**
+     * Plugin to execute.
+     */
+    @Parameter(required = true)
+    private Plugin plugin;
+
+    /**
+     * Plugin goal to execute.
+     */
+    @Parameter(required = true)
+    private String goal;
+
+    /**
+     * Plugin configuration to use in the execution.
+     */
+    @Parameter
+    private XmlPlexusConfiguration configuration;
+
+    /**
+     * The current Maven session.
+     */
+    @Parameter(defaultValue = "${session}", readonly = true)
+    private MavenSession mavenSession;
+
+    /**
+     * The Maven BuildPluginManager component.
+     */
+    @Component
+    private BuildPluginManager pluginManager;
     private static final String BASE_PATH = "src"+File.separator+"main"+File.separator+"java"+File.separator;
 
     public void execute() throws MojoExecutionException {
@@ -59,7 +97,7 @@ public class GenerateMojo extends AbstractMojo {
             createJavaClassFromJsonFile(sourceFile);
         }
         //File targetClassFile = new File
-
+        executeMojo(plugin, goal, toXpp3Dom(configuration), executionEnvironment(mavenProject, mavenSession, pluginManager));
     }
     private void createJavaClassFromJsonFile(final File file) {
         final String parentFileName = Util.getAsFileName(file.getName()).replace(".json", ".java");
