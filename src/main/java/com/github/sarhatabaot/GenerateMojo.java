@@ -51,29 +51,6 @@ public class GenerateMojo extends AbstractMojo {
     @Parameter(required = true, property = "jtj.targetpackage") //target should be a package
     private String targetPackage;
 
-    /**
-     * Plugin to execute.
-     */
-    @Parameter(required = true)
-    private Plugin plugin;
-
-    /**
-     * Plugin goal to execute.
-     */
-    @Parameter(required = true)
-    private String goal;
-
-    /**
-     * Plugin configuration to use in the execution.
-     */
-    @Parameter
-    private XmlPlexusConfiguration configuration;
-
-    /**
-     * The current Maven session.
-     */
-    @Parameter(defaultValue = "${session}", readonly = true)
-    private MavenSession mavenSession;
 
     /**
      * The Maven BuildPluginManager component.
@@ -97,7 +74,6 @@ public class GenerateMojo extends AbstractMojo {
             createJavaClassFromJsonFile(sourceFile);
         }
         //File targetClassFile = new File
-        executeMojo(plugin, goal, toXpp3Dom(configuration), executionEnvironment(mavenProject, mavenSession, pluginManager));
     }
     private void createJavaClassFromJsonFile(final File file) {
         final String parentFileName = Util.getAsFileName(file.getName()).replace(".json", ".java");
