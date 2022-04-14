@@ -27,7 +27,6 @@ import java.util.Map;
 @Mojo(
         name = "generate",
         defaultPhase = LifecyclePhase.GENERATE_SOURCES,
-        requiresDependencyResolution = ResolutionScope.COMPILE,
         aggregator = true
 )
 public class GenerateMojo extends AbstractMojo {
@@ -101,6 +100,7 @@ public class GenerateMojo extends AbstractMojo {
             //json end
             fileWriter.write("\n");
             fileWriter.write("}");
+            getLog().info("Created class: %s for file: %s".formatted(parentClassName,file.getName()));
         } catch (IOException e) {
             getLog().error(e);
         }
