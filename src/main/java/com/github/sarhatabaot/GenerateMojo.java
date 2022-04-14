@@ -26,8 +26,7 @@ import java.util.Map;
  */
 @Mojo(
         name = "generate",
-        defaultPhase = LifecyclePhase.GENERATE_SOURCES,
-        aggregator = true
+        defaultPhase = LifecyclePhase.GENERATE_SOURCES
 )
 public class GenerateMojo extends AbstractMojo {
     @Parameter( defaultValue = "${project}", readonly = true, required = true )
