@@ -5,7 +5,7 @@
     <artifactId>messages</artifactId>
     <packaging>maven-plugin</packaging>
     <version>1.0.0</version>
-    <name>JsonToStaticJava Maven Plugin</name>
+    <name>Messages Maven Plugin</name>
     <description>Maven plugin to generate data classes from json.</description>
 
     <properties>
@@ -19,6 +19,7 @@
         <gson.version>2.9.0</gson.version>
         <junit.jupiter.version>5.8.2</junit.jupiter.version>
     </properties>
+
     <build>
         <defaultGoal>clean install</defaultGoal>
         <plugins>
@@ -29,6 +30,14 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub sarhatabaot Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/sarhatabaot/Messsages</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -42,7 +51,6 @@
             <version>${maven.core.version}</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
@@ -55,7 +63,6 @@
             <version>${maven.testing.harness.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
