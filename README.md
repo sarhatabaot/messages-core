@@ -1,5 +1,5 @@
-# JsonToStaticJava
- Simple Helper Plugin
+# Messages
+### Simple Helper Plugin
 
 To use run messages:generate. You should probably pair this with https://code.revelc.net/formatter-maven-plugin/examples.html
 
