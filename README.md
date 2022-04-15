@@ -1,18 +1,20 @@
 # JsonToStaticJava
  Simple Helper Plugin
 
-To use run messages:generate
+To use run messages:generate. You should probably pair this with https://code.revelc.net/formatter-maven-plugin/examples.html
 
 ```json
-"cmd-hint": "Test for note",
-"migrate": {  
-  "yaml-to-yaml": "&4Cannot convert from YAML to YAML.",  
- "change-storage-type": "&4Please change your storage type to MYSQL or MARIADB & restart your server.",  
- "warning": "&cAre you sure you want to migrate? This action is irreversible.",  
- "backup-hint1": "&cMake sure you have made a backup of your decks.yml before continuing.",  
- "backup-hint2": "&cYou can easily backup all settings using /cards debug zip",  
- "confirm-hint": "&cIf you want to convert from YAML to ",  
- "confirm-cmd": "&cPlease type /cards migrate <deck|data> confirm"  
+{
+  "cmd-hint": "Test for note",
+  "migrate": {
+    "yaml-to-yaml": "&4Cannot convert from YAML to YAML.",
+    "change-storage-type": "&4Please change your storage type to MYSQL or MARIADB & restart your server.",
+    "warning": "&cAre you sure you want to migrate? This action is irreversible.",
+    "backup-hint1": "&cMake sure you have made a backup of your decks.yml before continuing.",
+    "backup-hint2": "&cYou can easily backup all settings using /cards debug zip",
+    "confirm-hint": "&cIf you want to convert from YAML to ",
+    "confirm-cmd": "&cPlease type /cards migrate <deck|data> confirm"
+  }
 }
 ```
 
