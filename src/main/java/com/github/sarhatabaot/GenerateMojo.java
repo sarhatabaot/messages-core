@@ -29,49 +29,52 @@ import java.util.Map;
         defaultPhase = LifecyclePhase.GENERATE_SOURCES
 )
 public class GenerateMojo extends AbstractMojo {
-    @Parameter( defaultValue = "${project}", readonly = true, required = true )
+    @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject mavenProject;
 
-    @Parameter(property = "jtj.overwrite")
+    @Parameter(property = "messages.overwrite")
     private boolean overwriteClasses;
 
-    @Parameter(required = true, property = "jtj.sourcefolder") //source folder to generate classes from
+    @Parameter(required = true, property = "messages.sourcefolder") //source folder to generate classes from
     private File sourceFolder;
 
-    @Parameter(required = true, property = "jtj.targetpackage") //target should be a package
+    @Parameter(required = true, property = "messages.targetpackage") //target should be a package
     private String targetPackage;
 
+    @Parameter(property = "messages.privateconstructor")
+    private String privateConstructor;
 
-    private static final String BASE_PATH = "src"+File.separator+"main"+File.separator+"java"+File.separator;
+    private static final String BASE_PATH = "src" + File.separator + "main" + File.separator + "java" + File.separator;
 
     public void execute() throws MojoExecutionException {
         String splitPackage = getPathFromPackage();
 
         final File targetFolder = new File(mavenProject.getBasedir(), BASE_PATH + splitPackage);
-        if(!sourceFolder.exists())
-            throw new MojoExecutionException("Could not find source folder."+sourceFolder.getName());
+        if (!sourceFolder.exists())
+            throw new MojoExecutionException("Could not find source folder." + sourceFolder.getName());
 
-        if(!targetFolder.exists())
-            throw new MojoExecutionException("Could not find specified package. "+targetPackage + " "+targetFolder.getPath());
+        if (!targetFolder.exists())
+            throw new MojoExecutionException("Could not find specified package. " + targetPackage + " " + targetFolder.getPath());
 
 
-        for(File sourceFile :sourceFolder.listFiles()) {
+        for (File sourceFile : sourceFolder.listFiles()) {
             createJavaClassFromJsonFile(sourceFile);
         }
         //File targetClassFile = new File
     }
+
     private void createJavaClassFromJsonFile(final File file) {
         final String parentFileName = Util.getAsFileName(file.getName()).replace(".json", ".java");
-        final String parentClassName = parentFileName.replace(".java","");
+        final String parentClassName = parentFileName.replace(".java", "");
         final String classPath = BASE_PATH + getPathFromPackage();
 
-        File outputFile = new File(classPath,parentFileName);
+        File outputFile = new File(classPath, parentFileName);
 
-        try (Writer fileWriter = new BufferedWriter(new FileWriter(outputFile,!overwriteClasses))) {
-            fileWriter.write("package "+targetPackage+";");
+        try (Writer fileWriter = new BufferedWriter(new FileWriter(outputFile, !overwriteClasses))) {
+            fileWriter.write("package " + targetPackage + ";");
             fileWriter.write("\n");
             fileWriter.write("\n");
-            fileWriter.write("public final class "+parentClassName+ " ");
+            fileWriter.write("public final class " + parentClassName + " ");
             fileWriter.write("{");
             fileWriter.write("\n");
 
@@ -81,40 +84,53 @@ public class GenerateMojo extends AbstractMojo {
             //root element
             JsonElement rootElement = JsonParser.parseReader(reader);
             getLog().debug(rootElement.toString());
-            for(Map.Entry<String, JsonElement> entrySet: rootElement.getAsJsonObject().entrySet() ) {
-                if(entrySet.getValue().isJsonPrimitive()) {
-                    writePrimitiveString(fileWriter,entrySet,"\t");
+            for (Map.Entry<String, JsonElement> entrySet : rootElement.getAsJsonObject().entrySet()) {
+                if (entrySet.getValue().isJsonPrimitive()) {
+                    writePrimitiveString(fileWriter, entrySet, "\t");
                     fileWriter.write("\n");
                 } else {
                     final String innerClassName = Util.getAsClassName(entrySet.getKey());
-                    fileWriter.write("\t public static class "+innerClassName +" {");
+                    fileWriter.write("\t public static class " + innerClassName + " {");
                     fileWriter.write("\n");
-                    for(Map.Entry<String, JsonElement> elementSet: entrySet.getValue().getAsJsonObject().entrySet()) {
-                        writePrimitiveString(fileWriter,elementSet,"\t\t");
+                    for (Map.Entry<String, JsonElement> elementSet : entrySet.getValue().getAsJsonObject().entrySet()) {
+                        writePrimitiveString(fileWriter, elementSet, "\t\t");
                         fileWriter.write("\n");
+                    }
+                    if (!privateConstructor.isEmpty()) {
+                        writePrivateUtilConstructor(fileWriter,innerClassName);
                     }
                     fileWriter.write("}");
                 }
             }
             //json end
             fileWriter.write("\n");
+            if (!privateConstructor.isEmpty()) {
+                writePrivateUtilConstructor(fileWriter, parentClassName);
+            }
             fileWriter.write("}");
-            getLog().info("Created class: %s for file: %s".formatted(parentClassName,file.getName()));
+
+            getLog().info("Created class: %s for file: %s".formatted(parentClassName, file.getName()));
         } catch (IOException e) {
             getLog().error(e);
         }
     }
 
+    private void writePrivateUtilConstructor(Writer fileWriter, String parentClassName) throws IOException {
+        fileWriter.write("private " + parentClassName + " (){");
+        fileWriter.write("throw new UnsupportedOperationException(" + privateConstructor + ");");
+        fileWriter.write("}");
+    }
+
     private void writePrimitiveString(Writer fileWriter, Map.Entry<String, JsonElement> entrySet, String tab) throws IOException {
         final String baseVariableName = "public static final String ";
         String variableName = Util.getAsVariableName(entrySet.getKey());
-        final String finalVariableName = baseVariableName+variableName;
+        final String finalVariableName = baseVariableName + variableName;
         final String finalVariableValue = entrySet.getValue().getAsString();
-        fileWriter.write(tab+finalVariableName+" = "+'"'+finalVariableValue+'"'+";");
+        fileWriter.write(tab + finalVariableName + " = " + '"' + finalVariableValue + '"' + ";");
     }
 
     private String getPathFromPackage() {
-        return String.join(File.separator,targetPackage.split("\\."));
+        return String.join(File.separator, targetPackage.split("\\."));
     }
 
 }
