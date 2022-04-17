@@ -96,7 +96,7 @@ public class GenerateMojo extends AbstractMojo {
                         writePrimitiveString(fileWriter, elementSet, "\t\t");
                         fileWriter.write("\n");
                     }
-                    if (!privateConstructor.isEmpty()) {
+                    if (privateConstructor!= null && !privateConstructor.isEmpty()) {
                         writePrivateUtilConstructor(fileWriter,innerClassName);
                     }
                     fileWriter.write("}");
@@ -104,7 +104,7 @@ public class GenerateMojo extends AbstractMojo {
             }
             //json end
             fileWriter.write("\n");
-            if (!privateConstructor.isEmpty()) {
+            if (privateConstructor!= null && !privateConstructor.isEmpty()) {
                 writePrivateUtilConstructor(fileWriter, parentClassName);
             }
             fileWriter.write("}");
