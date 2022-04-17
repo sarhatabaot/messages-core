@@ -109,7 +109,7 @@ public class GenerateMojo extends AbstractMojo {
             }
             fileWriter.write("}");
 
-            getLog().info("Created class: %s for file: %s".formatted(parentClassName, file.getName()));
+            getLog().info(String.format("Created class: %s for file: %s",parentClassName, file.getName()));
         } catch (IOException e) {
             getLog().error(e);
         }
