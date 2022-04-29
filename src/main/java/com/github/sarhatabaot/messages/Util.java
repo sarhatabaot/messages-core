@@ -1,5 +1,8 @@
-package com.github.sarhatabaot;
+package com.github.sarhatabaot.messages;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +14,11 @@ public class Util {
         throw new UnsupportedOperationException();
     }
 
-    public static String getAsClassName(final String sourceFileName) {
+    public static @NotNull String getAsClassName(final String sourceFileName) {
         return getAsFileName(sourceFileName).replace(".java", "");
     }
 
-    public static String getAsFileName(final String sourceFileName) {
+    public static @NotNull String getAsFileName(final @NotNull String sourceFileName) {
         List<String> names = new ArrayList<>();
         for(String string: sourceFileName.split("-")) {
             names.add(capitalize(string));
@@ -23,7 +26,7 @@ public class Util {
         return String.join("",names);
     }
 
-    public static String getAsVariableName(final String sourceKey) {
+    public static @NotNull String getAsVariableName(final @NotNull String sourceKey) {
         return sourceKey.replace("-","_").toUpperCase();
     }
 
@@ -32,4 +35,9 @@ public class Util {
             return null;
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
+
+    public static @NotNull String getPathFromPackage(final @NotNull String targetPackage) {
+        return String.join(File.separator, targetPackage.split("\\."));
+    }
+
 }

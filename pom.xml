@@ -2,10 +2,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.sarhatabaot</groupId>
-    <artifactId>messages</artifactId>
-    <packaging>maven-plugin</packaging>
+    <artifactId>messages-core</artifactId>
+    <packaging>jar</packaging>
     <version>1.0.2</version>
-    <name>Messages Maven Plugin</name>
+    <name>Messages Core</name>
+
     <description>Maven plugin to generate data classes from json.</description>
 
     <properties>
@@ -13,73 +14,42 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
 
-        <maven.plugin.tools.version>3.6.4</maven.plugin.tools.version>
-        <maven.core.version>3.8.5</maven.core.version>
-        <maven.testing.harness.version>3.3.0</maven.testing.harness.version>
         <gson.version>2.9.0</gson.version>
         <junit.jupiter.version>5.8.2</junit.jupiter.version>
+        <slf4j-api>2.0.0-alpha7</slf4j-api>
+        <jetbrains.annotations.version>23.0.0</jetbrains.annotations.version>
+        <maven.compiler.version>3.10.1</maven.compiler.version>
+        <maven.deploy.version>3.0.0-M2</maven.deploy.version>
     </properties>
 
     <build>
-        <defaultGoal>clean install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
-                <version>${maven.plugin.tools.version}</version>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
             </plugin>
             <plugin>
-                <groupId>net.nicoulaj.maven.plugins</groupId>
-                <artifactId>checksum-maven-plugin</artifactId>
-                <version>1.11</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>artifacts</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <algorithms>
-                        <algorithm>SHA-256</algorithm>
-                    </algorithms>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven.deploy.version}</version>
             </plugin>
         </plugins>
-
     </build>
     <distributionManagement>
         <repository>
             <id>github</id>
             <name>GitHub sarhatabaot Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/sarhatabaot/Messsages</url>
+            <url>https://maven.pkg.github.com/sarhatabaot/messages</url>
         </repository>
     </distributionManagement>
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-core</artifactId>
-            <version>${maven.core.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-plugin-api</artifactId>
-            <version>${maven.core.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugin-tools</groupId>
-            <artifactId>maven-plugin-annotations</artifactId>
-            <version>${maven.plugin.tools.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugin-testing</groupId>
-            <artifactId>maven-plugin-testing-harness</artifactId>
-            <version>${maven.testing.harness.version}</version>
-            <scope>test</scope>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>${jetbrains.annotations.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -91,6 +61,12 @@
             <artifactId>junit-jupiter</artifactId>
             <version>${junit.jupiter.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.0-alpha7</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

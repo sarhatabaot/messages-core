@@ -1,15 +1,11 @@
-package com.github.sarhatabaot;
+package com.github.sarhatabaot.messages;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,54 +15,27 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-
 /**
- * This goal aims to generate a static accessor class
- * with string to every internal message
+ * @author sarhatabaot
  */
-@Mojo(
-        name = "generate",
-        defaultPhase = LifecyclePhase.GENERATE_SOURCES
-)
-public class GenerateMojo extends AbstractMojo {
-    @Parameter(defaultValue = "${project}", readonly = true, required = true)
-    private MavenProject mavenProject;
+public class WriteClass {
+    private final Logger logger = LoggerFactory.getLogger(WriteClass.class);
+    private final String targetPackage;
+    private final String basePath;
+    private final String privateConstructor;
+    private final boolean overwriteClasses;
 
-    @Parameter(property = "messages.overwrite")
-    private boolean overwriteClasses;
-
-    @Parameter(required = true, property = "messages.sourcefolder") //source folder to generate classes from
-    private File sourceFolder;
-
-    @Parameter(required = true, property = "messages.targetpackage") //target should be a package
-    private String targetPackage;
-
-    @Parameter(property = "messages.privateconstructor")
-    private String privateConstructor;
-
-    private static final String BASE_PATH = "src" + File.separator + "main" + File.separator + "java" + File.separator;
-
-    public void execute() throws MojoExecutionException {
-        String splitPackage = getPathFromPackage();
-
-        final File targetFolder = new File(mavenProject.getBasedir(), BASE_PATH + splitPackage);
-        if (!sourceFolder.exists())
-            throw new MojoExecutionException("Could not find source folder." + sourceFolder.getName());
-
-        if (!targetFolder.exists())
-            throw new MojoExecutionException("Could not find specified package. " + targetPackage + " " + targetFolder.getPath());
-
-
-        for (File sourceFile : sourceFolder.listFiles()) {
-            createJavaClassFromJsonFile(sourceFile);
-        }
-        //File targetClassFile = new File
+    public WriteClass(final String targetPackage, final String basePath, final String privateConstructor, final boolean overwriteClasses) {
+        this.targetPackage = targetPackage;
+        this.basePath = basePath;
+        this.privateConstructor = privateConstructor;
+        this.overwriteClasses = overwriteClasses;
     }
 
-    private void createJavaClassFromJsonFile(final File file) {
+    public void createJavaClassFromJsonFile(final @NotNull File file) {
         final String parentFileName = Util.getAsFileName(file.getName()).replace(".json", ".java");
         final String parentClassName = parentFileName.replace(".java", "");
-        final String classPath = BASE_PATH + getPathFromPackage();
+        final String classPath = basePath + getPathFromPackage();
 
         File outputFile = new File(classPath, parentFileName);
 
@@ -83,7 +52,7 @@ public class GenerateMojo extends AbstractMojo {
 
             //root element
             JsonElement rootElement = JsonParser.parseReader(reader);
-            getLog().debug(rootElement.toString());
+            logger.debug(rootElement.toString());
             for (Map.Entry<String, JsonElement> entrySet : rootElement.getAsJsonObject().entrySet()) {
                 if (entrySet.getValue().isJsonPrimitive()) {
                     writePrimitiveString(fileWriter, entrySet, "\t");
@@ -109,19 +78,19 @@ public class GenerateMojo extends AbstractMojo {
             }
             fileWriter.write("}");
 
-            getLog().info(String.format("Created class: %s for file: %s",parentClassName, file.getName()));
+            logger.info(String.format("Created class: %s for file: %s",parentClassName, file.getName()));
         } catch (IOException e) {
-            getLog().error(e);
+            logger.error(e.getMessage(),e);
         }
     }
 
-    private void writePrivateUtilConstructor(Writer fileWriter, String parentClassName) throws IOException {
+    private void writePrivateUtilConstructor(@NotNull Writer fileWriter, String parentClassName) throws IOException {
         fileWriter.write("private " + parentClassName + " (){");
         fileWriter.write("throw new UnsupportedOperationException(" + privateConstructor + ");");
         fileWriter.write("}");
     }
 
-    private void writePrimitiveString(Writer fileWriter, Map.Entry<String, JsonElement> entrySet, String tab) throws IOException {
+    private void writePrimitiveString(@NotNull Writer fileWriter, Map.@NotNull Entry<String, JsonElement> entrySet, String tab) throws IOException {
         final String baseVariableName = "public static final String ";
         String variableName = Util.getAsVariableName(entrySet.getKey());
         final String finalVariableName = baseVariableName + variableName;
@@ -129,8 +98,7 @@ public class GenerateMojo extends AbstractMojo {
         fileWriter.write(tab + finalVariableName + " = " + '"' + finalVariableValue + '"' + ";");
     }
 
-    private String getPathFromPackage() {
+    private @NotNull String getPathFromPackage() {
         return String.join(File.separator, targetPackage.split("\\."));
     }
-
 }
