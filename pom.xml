@@ -40,7 +40,7 @@
         <repository>
             <id>github</id>
             <name>GitHub sarhatabaot Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/sarhatabaot/messages</url>
+            <url>https://maven.pkg.github.com/sarhatabaot/messages-core</url>
         </repository>
     </distributionManagement>
 
