@@ -1,5 +1,5 @@
 # Messages
-### Simple Helper Plugin
+### Core library for https://github.com/sarhatabaot/messages-maven-plugin
 
 ## Usage
 ```xml
