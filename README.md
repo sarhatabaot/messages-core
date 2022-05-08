@@ -1,6 +1,7 @@
 # Messages
 ### Simple Helper Plugin
 
+## Usage
 ```xml
 <plugin>
     <groupId>com.github.sarhatabaot</groupId>
@@ -14,16 +15,19 @@
     </configuration>
 </plugin>
 ```
+
 - **overwriteClasses** - Should we overwrite the classes everytime we run `generate`.
 - **sourceFolder** - Source folder to generate from.
 - **targetPackage** - Where the generated classes should go.
 - **privateConstructer** - If empty doesn't generate anything. In most use cases our generated classes are util classes. This adds a private constructor with the assigned class.
-- 
+
 ```java
 throw new UnsupportedOperationException(InternalExceptions.UTIL_CLASS);
 ```
+
 For example usage see [https://github.com/sarhatabaot/TradingCards/tree/master/tradingcards-plugin](https://github.com/sarhatabaot/TradingCards/tree/master/tradingcards-plugin).
 
+## Run
 To use run messages:generate. You should probably pair this with https://code.revelc.net/formatter-maven-plugin/examples.html
 
 ```json
