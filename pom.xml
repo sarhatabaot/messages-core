@@ -4,7 +4,7 @@
     <groupId>com.github.sarhatabaot</groupId>
     <artifactId>messages-core</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.3</version>
+    <version>1.1.0</version>
     <name>Messages Core</name>
 
     <description>Maven plugin to generate data classes from json.</description>
@@ -16,10 +16,11 @@
 
         <gson.version>2.9.0</gson.version>
         <junit.jupiter.version>5.8.2</junit.jupiter.version>
-        <slf4j-api>2.0.0-alpha7</slf4j-api>
+        <slf4j-api.version>2.0.0-alpha7</slf4j-api.version>
         <jetbrains.annotations.version>23.0.0</jetbrains.annotations.version>
         <maven.compiler.version>3.10.1</maven.compiler.version>
         <maven.deploy.version>3.0.0-M2</maven.deploy.version>
+        <snakeyaml.version>1.30</snakeyaml.version>
     </properties>
 
     <build>
@@ -57,6 +58,12 @@
             <version>${gson.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit.jupiter.version}</version>
@@ -65,7 +72,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.0-alpha7</version>
+            <version>${slf4j-api.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
