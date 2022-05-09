@@ -8,6 +8,7 @@
     <artifactId>messages-maven-plugin</artifactId>
     <version>${messages.version}</version>
     <configuration>
+	<fileType>JSON</fileType>
         <overwriteClasses>true</overwriteClasses>
         <sourceFolder>internal-messages</sourceFolder>
         <targetPackage>net.tinetwork.tradingcards.tradingcardsplugin.messages</targetPackage>
@@ -15,9 +16,9 @@
     </configuration>
 </plugin>
 ```
-
+- **fileType** - JSON or YAML
 - **overwriteClasses** - Should we overwrite the classes everytime we run `generate`.
-- **sourceFolder** - Source folder to generate from.
+- **sourceFolder** - Source folder to generate from. Can also be a file.
 - **targetPackage** - Where the generated classes should go.
 - **privateConstructer** - If empty doesn't generate anything. In most use cases our generated classes are util classes. This adds a private constructor with the assigned class.
 
