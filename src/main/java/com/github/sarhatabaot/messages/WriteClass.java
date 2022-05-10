@@ -1,5 +1,6 @@
 package com.github.sarhatabaot.messages;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,11 +36,25 @@ public abstract class WriteClass<T> {
         fileWriter.write("}");
     }
 
-    protected void writePrimitiveString(@NotNull Writer fileWriter, final String key, final String value, final String tab) throws IOException {
-        final String baseVariableName = "public static final String ";
-        String variableName = Util.getAsVariableName(key);
-        final String finalVariableName = baseVariableName + variableName;
-        fileWriter.write(tab + finalVariableName + " = " + '"' + value + '"' + ";");
+    protected void writePrimitiveValue(@NotNull Writer fileWriter, final String key, final @NotNull TypeKeyValue value, final String tab) throws IOException {
+        final String variableName = Util.getAsVariableName(key);
+        final String finalVariableName = getFinalVariableName(value.getClazz().getTypeName().replace("java.lang.", ""), variableName);
+        fileWriter.write(tab + finalVariableName + " = "  + getWrapped(value) + ";");
+    }
+
+    /**
+     * @return Returns a wrapped string if the class is a string.
+     */
+    private String getWrapped(@NotNull TypeKeyValue value) {
+        if(value.getClazz().equals(String.class)) {
+            return '"'+value.getValue()+'"';
+        }
+        return value.getValue();
+    }
+
+    @Contract(pure = true)
+    private @NotNull String getFinalVariableName(final String typeName, final String variableName) {
+        return String.format("public static final %s %s",typeName,variableName);
     }
 
     protected @NotNull String getPathFromPackage() {
@@ -62,22 +77,7 @@ public abstract class WriteClass<T> {
             fileWriter.write("\n");
 
             for (Map.Entry<String, T> entrySet : getRootEntrySet(file)) {
-                if (noChildren(entrySet.getValue())) {
-                    writePrimitiveString(fileWriter, entrySet.getKey(), getEntryValueAsString(entrySet.getValue()), "\t");
-                    fileWriter.write("\n");
-                } else {
-                    final String innerClassName = Util.getAsClassName(entrySet.getKey());
-                    fileWriter.write("\t public static class " + innerClassName + " {");
-                    fileWriter.write("\n");
-                    for (Map.Entry<String, T> elementSet : getEntrySetFromValue(entrySet.getValue())) {
-                        writePrimitiveString(fileWriter, elementSet.getKey(), getEntryValueAsString(elementSet.getValue()), "\t\t");
-                        fileWriter.write("\n");
-                    }
-                    if (privateConstructor != null && !privateConstructor.isEmpty()) {
-                        writePrivateUtilConstructor(fileWriter, innerClassName);
-                    }
-                    fileWriter.write("}");
-                }
+                writeValue(fileWriter,entrySet);
             }
             //json end
             fileWriter.write("\n");
@@ -93,6 +93,30 @@ public abstract class WriteClass<T> {
 
     }
 
+    private void writeValue(Writer fileWriter,Map.@NotNull Entry<String, T> entrySet) throws IOException{
+        if (noChildren(entrySet.getValue())) {
+            writePrimitiveValue(fileWriter, entrySet.getKey(), getEntryValue(entrySet.getValue()), "\t");
+            fileWriter.write("\n");
+        } else {
+            final String innerClassName = Util.getAsClassName(entrySet.getKey());
+            fileWriter.write("\t public static class " + innerClassName + " {");
+            fileWriter.write("\n");
+            for (Map.Entry<String, T> elementSet : getEntrySetFromValue(entrySet.getValue())) {
+                if(noChildren(elementSet.getValue())) {
+                    writePrimitiveValue(fileWriter, elementSet.getKey(), getEntryValue(elementSet.getValue()), "\t\t");
+                    fileWriter.write("\n");
+                } else {
+                    writeValue(fileWriter,elementSet);
+                }
+            }
+            if (privateConstructor != null && !privateConstructor.isEmpty()) {
+                writePrivateUtilConstructor(fileWriter, innerClassName);
+            }
+            fileWriter.write("}");
+        }
+    }
+
+
     public abstract FileType getFileType();
 
     public abstract boolean noChildren(T element);
@@ -101,5 +125,6 @@ public abstract class WriteClass<T> {
 
     public abstract Set<Map.Entry<String, T>> getEntrySetFromValue(T value);
 
-    public abstract String getEntryValueAsString(T value);
+    public abstract TypeKeyValue getEntryValue(T value);
+
 }

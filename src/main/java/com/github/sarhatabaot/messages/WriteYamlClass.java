@@ -1,5 +1,6 @@
 package com.github.sarhatabaot.messages;
 
+import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -23,8 +24,13 @@ public class WriteYamlClass extends WriteClass<Object>{
     }
 
     @Override
-    public boolean noChildren(final Object element) {
-        return element instanceof String; //not exactly true, we should check if it's primitive or string
+    public boolean noChildren(final @NotNull Object element) {
+        return element.getClass().isPrimitive() ||
+                element instanceof Integer ||
+                element instanceof Double ||
+                element instanceof Float ||
+                element instanceof Boolean ||
+                element instanceof String;
     }
 
     @Override
@@ -42,7 +48,14 @@ public class WriteYamlClass extends WriteClass<Object>{
     }
 
     @Override
-    public String getEntryValueAsString(final Object value) {
-        return (String) value;
+    public TypeKeyValue getEntryValue(final Object value) {
+        if(value instanceof Integer)
+            return new TypeKeyValue(Integer.class, String.valueOf(value));
+        if(value instanceof Double)
+            return new TypeKeyValue(Double.class, String.valueOf(value));
+        if(value instanceof Boolean)
+            return new TypeKeyValue(Boolean.class,String.valueOf(value));
+
+        return new TypeKeyValue(String.class, String.valueOf(value));
     }
 }

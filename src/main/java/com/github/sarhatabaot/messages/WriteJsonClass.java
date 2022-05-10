@@ -2,6 +2,7 @@ package com.github.sarhatabaot.messages;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonReader;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,10 +34,7 @@ public class WriteJsonClass extends WriteClass<JsonElement>{
 
     @Override
     public Set<Map.Entry<String, JsonElement>> getRootEntrySet(File file) throws FileNotFoundException {
-        //json stuff
         JsonReader reader = new JsonReader(new FileReader(file));
-
-        //root element
         JsonElement rootElement = JsonParser.parseReader(reader);
         return rootElement.getAsJsonObject().entrySet();
     }
@@ -47,7 +45,17 @@ public class WriteJsonClass extends WriteClass<JsonElement>{
     }
 
     @Override
-    public String getEntryValueAsString(final @NotNull JsonElement value) {
-        return value.getAsString();
+    public TypeKeyValue getEntryValue(final @NotNull JsonElement value) {
+        JsonPrimitive primitive = value.getAsJsonPrimitive();
+
+        if(primitive.isNumber()) {
+            try {
+                return new TypeKeyValue(Double.class, String.valueOf(primitive.getAsDouble()));
+            } catch (NumberFormatException e){
+                return new TypeKeyValue(Integer.class, String.valueOf(primitive.getAsInt()));
+            }
+        }
+
+        return new TypeKeyValue(String.class, value.getAsString());
     }
 }
