@@ -24,7 +24,7 @@ public class WriteYamlClass extends WriteClass<Object>{
     }
 
     @Override
-    public boolean noChildren(final @NotNull Object element) {
+    public boolean isPrimitive(final @NotNull Object element) {
         return element.getClass().isPrimitive() ||
                 element instanceof Integer ||
                 element instanceof Double ||
@@ -57,5 +57,15 @@ public class WriteYamlClass extends WriteClass<Object>{
             return new TypeKeyValue(Boolean.class,String.valueOf(value));
 
         return new TypeKeyValue(String.class, String.valueOf(value));
+    }
+
+    @Override
+    public boolean isArray(final Object element) {
+        return element instanceof String[];
+    }
+
+    @Override
+    public String[] getAsStringArray(final Object value) {
+        return (String[]) value;
     }
 }

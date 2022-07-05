@@ -1,5 +1,6 @@
 package com.github.sarhatabaot.messages;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
@@ -9,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,7 +31,7 @@ public class WriteJsonClass extends WriteClass<JsonElement>{
     }
 
     @Override
-    public boolean noChildren(final @NotNull JsonElement element) {
+    public boolean isPrimitive(final @NotNull JsonElement element) {
         return element.isJsonPrimitive();
     }
 
@@ -57,5 +60,20 @@ public class WriteJsonClass extends WriteClass<JsonElement>{
         }
 
         return new TypeKeyValue(String.class, value.getAsString());
+    }
+
+    @Override
+    public boolean isArray(final @NotNull JsonElement element) {
+        return element.isJsonArray();
+    }
+
+    @Override
+    public String[] getAsStringArray(final @NotNull JsonElement value) {
+        List<String> stringList = new ArrayList<>();
+        JsonArray jsonElements = value.getAsJsonArray();
+        for(JsonElement element: jsonElements) {
+            stringList.add(element.getAsString());
+        }
+        return stringList.toArray(new String[0]);
     }
 }
