@@ -81,3 +81,39 @@ We should accept a source folder & target folder. Possibly should accept a targe
 ```
 
 All Strings should be public static final.
+
+# design doc for paths
+The messages generation is used to grab default values from config.yml files as well as generate messages used internally.
+
+We should be able to get the path of those as well. So generating and grabbing values will be
+
+```json
+{
+  "cmd-hint": "Test for note",
+  "migrate": {
+    "yaml-to-yaml": "&4Cannot convert from YAML to YAML."
+  }
+}
+```
+
+Should turn to:
+
+```java
+public class InternalMessages {
+    public static final ConfigMessageType CMD_HINT = new ConfigMessageType("cmd-hint", "Test for note");
+    public static class Migrate {
+        public static final ConfigMessageType YAML_TO_YAML = new ConfigMessageType("migrate.yaml-to-yaml","&4Cannot convert from YAML to YAML.");
+    }
+}
+```
+This record should generate somewhere once.
+```java
+public record ConfigMessageType (final String path, final String value){
+    @Override
+    public String toString() {
+        return value;
+    }
+}
+```
+
+This way we can handle paths changing easily as well.
