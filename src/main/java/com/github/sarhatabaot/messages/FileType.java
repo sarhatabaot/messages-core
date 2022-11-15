@@ -6,7 +6,7 @@ package com.github.sarhatabaot.messages;
 public enum FileType {
     YAML(".yml"),
     JSON(".json");
-    private String extension;
+    private final String extension;
 
     FileType(final String extension) {
         this.extension = extension;

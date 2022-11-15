@@ -4,7 +4,7 @@ package com.github.sarhatabaot.messages;
  * @author sarhatabaot
  */
 public class TypeKeyValue {
-    private Class<?> clazz;
+    private final Class<?> clazz;
     private final String value;
 
     public TypeKeyValue(final Class<?> clazz, final String value) {

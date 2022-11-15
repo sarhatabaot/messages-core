@@ -1,5 +1,8 @@
 package com.github.sarhatabaot.messages;
 
+import com.github.sarhatabaot.messages.FileType;
+import com.github.sarhatabaot.messages.TypeKeyValue;
+import com.github.sarhatabaot.messages.Util;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -48,10 +51,11 @@ public abstract class WriteClass<T> {
         final String arrayInit;
         StringBuilder stringBuilder = new StringBuilder();
         for (String value : values) {
-            stringBuilder.append('"');
-            stringBuilder.append(value);
-            stringBuilder.append('"');
-            stringBuilder.append(",");
+            stringBuilder
+                    .append('"')
+                    .append(value)
+                    .append('"')
+                    .append(",");
         }
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         arrayInit = stringBuilder.toString();

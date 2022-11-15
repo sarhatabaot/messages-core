@@ -4,9 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +36,7 @@ public class WriteYamlClass extends WriteClass<Object>{
     @Override
     public Set<Map.Entry<String, Object>> getRootEntrySet(final File file) throws IOException {
         Yaml yaml = new Yaml();
-        try (InputStream inputStream = new FileInputStream(file)) {
+        try (InputStream inputStream = Files.newInputStream(file.toPath())) {
             Map<String, Object> yamlFile = yaml.load(inputStream);
             return yamlFile.entrySet();
         }
