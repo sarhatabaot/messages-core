@@ -2,15 +2,17 @@ To help with various we should create a plugin (maven) that accepts json, and pa
 For example: "internal-messages.json":
 
 ```json
-"cmd-hint": "Test for note",
-"migrate": {  
-  "yaml-to-yaml": "&4Cannot convert from YAML to YAML.",  
- "change-storage-type": "&4Please change your storage type to MYSQL or MARIADB & restart your server.",  
- "warning": "&cAre you sure you want to migrate? This action is irreversible.",  
- "backup-hint1": "&cMake sure you have made a backup of your decks.yml before continuing.",  
- "backup-hint2": "&cYou can easily backup all settings using /cards debug zip",  
- "confirm-hint": "&cIf you want to convert from YAML to ",  
- "confirm-cmd": "&cPlease type /cards migrate <deck|data> confirm"  
+{
+  "cmd-hint": "Test for note",
+  "migrate": {
+    "yaml-to-yaml": "&4Cannot convert from YAML to YAML.",
+    "change-storage-type": "&4Please change your storage type to MYSQL or MARIADB & restart your server.",
+    "warning": "&cAre you sure you want to migrate? This action is irreversible.",
+    "backup-hint1": "&cMake sure you have made a backup of your decks.yml before continuing.",
+    "backup-hint2": "&cYou can easily backup all settings using /cards debug zip",
+    "confirm-hint": "&cIf you want to convert from YAML to ",
+    "confirm-cmd": "&cPlease type /cards migrate <deck|data> confirm"
+  }
 }
 ```
 
@@ -23,10 +25,10 @@ public class InternalMessages {
 
 	public static class Migrate {
 		public static final String YAML_TO_YAML = "&4Cannot convert from YAML to YAML.";
-		public static final String CHANGE_STORAGE_TYPE = "&4Please change your storage type to MYSQL or MARIADB & restart your server."
+		public static final String CHANGE_STORAGE_TYPE = "&4Please change your storage type to MYSQL or MARIADB & restart your server.";
 		public static final String WARNING = "&cAre you sure you want to migrate? This action is irreversible.";
-		public static final String BACKUP_HINT1 = "&cMake sure you have made a backup of your decks.yml before continuing."
-		public static final String BACKUP_HINT2 = "&cYou can easily backup all settings using /cards debug zip"
+		public static final String BACKUP_HINT1 = "&cMake sure you have made a backup of your decks.yml before continuing.";
+		public static final String BACKUP_HINT2 = "&cYou can easily backup all settings using /cards debug zip";
 		public static final String CONFIRM_HINT = "&cIf you want to convert from YAML to";
 		public static final String CONFIRM_CMD = "&cPlease type /cards migrate <deck|data> confirm";
 	}
@@ -36,7 +38,7 @@ public class InternalMessages {
 This should happen as a part of the build phase, or with a custom goal. So we can run
 `mvn build` or `mvn jsonToJavaString:run` or something.
 
-It should be seamless and work as a part of the build process as well so we can run ci/cd with it.
+It should be seamless and work as a part of the build process as well, so we can run ci/cd with it.
 
 ## Steps:
 1. Should parse json files from select resources folder.
@@ -46,25 +48,29 @@ It should be seamless and work as a part of the build process as well so we can 
 ### Custom Checkstyle
 We should fork an existing checkstyle for this project.
 We cannot have "root" duplicates.
-We can have duplicates in childs. That is, not in the child object, but a child of child can be the same key in another child.
+We can have duplicates in children. That is, not in the child object, but a child of child can be the same key in another child.
 For example:
 
 Compliant:
 ```json
-"child": "",
-"child1": { 
-	"duplicate": "test1"
-},
-"child2": {
-	"duplicate": "test2"
+{
+  "child": "",
+  "child1": {
+    "duplicate": "test1"
+  },
+  "child2": {
+    "duplicate": "test2"
+  }
 }
 ```
 
 Non-compliant:
 ```json
-"child": "test",
-"child": { 
-	"duplicate": "test1"
+{
+  "child": "test",
+  "child": {
+    "duplicate": "test1"
+  }
 }
 ```
 ## After Generation:

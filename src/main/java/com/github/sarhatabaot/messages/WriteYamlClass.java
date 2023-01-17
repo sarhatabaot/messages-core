@@ -42,6 +42,7 @@ public class WriteYamlClass extends WriteClass<Object>{
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Set<Map.Entry<String, Object>> getEntrySetFromValue(final Object value) {
         return ((Map<String,Object>) value).entrySet();
