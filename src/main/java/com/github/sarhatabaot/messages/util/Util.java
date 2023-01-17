@@ -25,6 +25,7 @@ public class Util {
         return String.join("",names);
     }
     
+    
     public static String capitalize(String str) {
         if(str == null)
             return null;
