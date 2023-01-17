@@ -4,7 +4,7 @@
     <groupId>com.github.sarhatabaot</groupId>
     <artifactId>messages-core</artifactId>
     <packaging>jar</packaging>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0</version>
     <name>Messages Core</name>
 
     <description>Maven plugin to generate data classes from json.</description>
