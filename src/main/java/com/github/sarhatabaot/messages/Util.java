@@ -2,7 +2,6 @@ package com.github.sarhatabaot.messages;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +24,12 @@ public class Util {
         }
         return String.join("",names);
     }
-
-    public static @NotNull String getAsVariableName(final @NotNull String sourceKey) {
-        return sourceKey.replace("-","_").toUpperCase();
-    }
-
+    
     public static String capitalize(String str) {
         if(str == null)
             return null;
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
-    public static @NotNull String getPathFromPackage(final @NotNull String targetPackage) {
-        return String.join(File.separator, targetPackage.split("\\."));
-    }
 
 }

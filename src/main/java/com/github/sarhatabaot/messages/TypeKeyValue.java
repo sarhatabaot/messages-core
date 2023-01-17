@@ -11,11 +11,19 @@ public class TypeKeyValue {
         this.clazz = clazz;
         this.value = value;
     }
-
+    
+    /**
+     * Returns the value to set.
+     * @return the value.
+     */
     public String getValue() {
         return value;
     }
-
+    
+    /**
+     * Returns the class type to generate.
+     * @return The class type.
+     */
     public Class<?> getClazz() {
         return clazz;
     }

@@ -11,7 +11,10 @@ public enum FileType {
     FileType(final String extension) {
         this.extension = extension;
     }
-
+    
+    /**
+     * @return the full file extension. Including the ".".
+     */
     public String getExtension() {
         return extension;
     }

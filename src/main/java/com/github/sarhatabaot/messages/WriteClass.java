@@ -153,6 +153,10 @@ public abstract class WriteClass<T> {
         return key.toUpperCase();
     }
     
+    /**
+     * See #{@link FileType}
+     * @return the file type
+     */
     public abstract FileType getFileType();
     
     public abstract boolean isPrimitive(T element);
