@@ -1,5 +1,7 @@
-package com.github.sarhatabaot.messages;
+package com.github.sarhatabaot.messages.generate;
 
+import com.github.sarhatabaot.messages.model.FileType;
+import com.github.sarhatabaot.messages.model.TypeKeyValue;
 import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.Yaml;
 

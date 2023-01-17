@@ -1,5 +1,8 @@
-package com.github.sarhatabaot.messages;
+package com.github.sarhatabaot.messages.generate;
 
+import com.github.sarhatabaot.messages.util.Util;
+import com.github.sarhatabaot.messages.model.FileType;
+import com.github.sarhatabaot.messages.model.TypeKeyValue;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jetbrains.annotations.Contract;

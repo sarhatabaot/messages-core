@@ -1,4 +1,4 @@
-package com.github.sarhatabaot.messages;
+package com.github.sarhatabaot.messages.util;
 
 import org.jetbrains.annotations.NotNull;
 
