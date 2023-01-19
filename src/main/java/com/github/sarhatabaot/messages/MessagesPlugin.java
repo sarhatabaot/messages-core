@@ -36,10 +36,12 @@ public interface MessagesPlugin<T extends Exception> {
         final File targetFolder = new File(getBaseDir(), getBasePath()+ splitPackage);
         if (!getSourceFolder().exists()) {
             throwException("Could not find source folder." + getSourceFolder().getName());
+            return;
         }
         
         if (!targetFolder.exists()) {
             throwException("Could not find specified package. " + getTargetPackage() + " " + targetFolder.getPath());
+            return;
         }
         
         WriteClass<?> writeClass = null;
@@ -52,6 +54,7 @@ public interface MessagesPlugin<T extends Exception> {
         
         if (writeClass == null) {
             throwException("There was a problem getting the file type");
+            return;
         }
         
         try {
