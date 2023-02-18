@@ -129,13 +129,20 @@ public abstract class WriteClass<T> {
     
     private void writePrimitiveField(final @NotNull JavaClassSource javaClass, Map.@NotNull Entry<String, T> entrySet) {
         TypeKeyValue typeKeyValue = getEntryValue(entrySet.getValue());
+        Class<?> type = typeKeyValue.getClazz();
+        String fieldName = translateToFieldKey(entrySet.getKey());
         javaClass.addField()
-            .setType(typeKeyValue.getClazz())
+            .setType(type)
             .setPublic()
             .setStatic(true)
             .setFinal(true)
-            .setName(translateToFieldKey(entrySet.getKey()))
-            .setStringInitializer(typeKeyValue.getValue());
+            .setName(fieldName);
+        
+        if(type.isAssignableFrom(String.class)) {
+            javaClass.getField(fieldName).setStringInitializer(typeKeyValue.getValue());
+        } else {
+            javaClass.getField(fieldName).setLiteralInitializer(typeKeyValue.getValue());
+        }
     }
     
     private void writeArrayField(final @NotNull JavaClassSource javaClass, final String key, final String @NotNull [] values) {
