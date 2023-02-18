@@ -152,7 +152,7 @@ public abstract class WriteClass<T> {
             .setStatic(true)
             .setFinal(true)
             .setName(translateToFieldKey(key))
-            .setStringInitializer(arrayAsArrayInit(values));
+            .setLiteralInitializer("new String[]{"+arrayAsArrayInit(values)+"}");
     }
     
     
