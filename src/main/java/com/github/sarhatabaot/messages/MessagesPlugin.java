@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,7 +19,7 @@ public interface MessagesPlugin<T extends Exception> {
     
     String getBasePath();
     
-    String getSourceFolderPath();
+    List<String> getSourceFolderPath();
     String getBaseDir();
     default FileType getFileType() {
         return FileType.JSON;
@@ -31,33 +32,40 @@ public interface MessagesPlugin<T extends Exception> {
     void throwException(final String message) throws T;
     
     default void runTask() throws T {
+        for(String path: getSourceFolderPath()) {
+            final File sourceFolder = new File(path);
+            generateClass(sourceFolder);
+        }
+    }
+    
+    private void generateClass(final File sourceFolder) throws T {
         String splitPackage = getPathFromPackage(getTargetPackage());
-        
+    
         final File targetFolder = new File(getBaseDir(), getBasePath()+ splitPackage);
-        final File sourceFolder = new File(getSourceFolderPath());
+    
         if (!sourceFolder.exists()) {
             throwException("Could not find source folder." + sourceFolder.getName());
             return;
         }
-        
+    
         if (!targetFolder.exists()) {
             throwException("Could not find specified package. " + getTargetPackage() + " " + targetFolder.getPath());
             return;
         }
-        
+    
         WriteClass<?> writeClass = null;
-        
+    
         if (getFileType() == FileType.JSON)
             writeClass = new WriteJsonClass(getTargetPackage(),getBasePath(), getPrivateConstructor(), isOverwriteClasses());
-        
+    
         if (getFileType() == FileType.YAML)
             writeClass = new WriteYamlClass(getTargetPackage(), getBasePath(), getPrivateConstructor(), isOverwriteClasses());
-        
+    
         if (writeClass == null) {
             throwException("There was a problem getting the file type");
             return;
         }
-        
+    
         try {
             if (sourceFolder.isDirectory()) {
                 for (File sourceFile : Objects.requireNonNull(sourceFolder.listFiles())) {
