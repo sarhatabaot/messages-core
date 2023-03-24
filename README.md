@@ -1,5 +1,5 @@
 # Messages
-### Core library for https://github.com/sarhatabaot/messages-maven-plugin
+### Core library for https://github.com/sarhatabaot/messages-maven-plugin , https://github.com/sarhatabaot/messages-gradle-plugin
 
 ## Usage
 ```xml
