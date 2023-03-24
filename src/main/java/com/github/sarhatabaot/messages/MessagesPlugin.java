@@ -18,8 +18,8 @@ public interface MessagesPlugin<T extends Exception> {
     
     String getBasePath();
     
-    File getSourceFolder();
-    File getBaseDir();
+    String getSourceFolderPath();
+    String getBaseDir();
     default FileType getFileType() {
         return FileType.JSON;
     }
@@ -34,8 +34,9 @@ public interface MessagesPlugin<T extends Exception> {
         String splitPackage = getPathFromPackage(getTargetPackage());
         
         final File targetFolder = new File(getBaseDir(), getBasePath()+ splitPackage);
-        if (!getSourceFolder().exists()) {
-            throwException("Could not find source folder." + getSourceFolder().getName());
+        final File sourceFolder = new File(getSourceFolderPath());
+        if (!sourceFolder.exists()) {
+            throwException("Could not find source folder." + sourceFolder.getName());
             return;
         }
         
@@ -58,12 +59,12 @@ public interface MessagesPlugin<T extends Exception> {
         }
         
         try {
-            if (getSourceFolder().isDirectory()) {
-                for (File sourceFile : Objects.requireNonNull(getSourceFolder().listFiles())) {
+            if (sourceFolder.isDirectory()) {
+                for (File sourceFile : Objects.requireNonNull(sourceFolder.listFiles())) {
                     writeClass.createJavaClass(sourceFile);
                 }
             } else {
-                writeClass.createJavaClass(getSourceFolder());
+                writeClass.createJavaClass(sourceFolder);
             }
         } catch (IOException e) {
             throwException(e.getMessage());
