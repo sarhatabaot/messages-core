@@ -19,53 +19,55 @@ public interface MessagesPlugin<T extends Exception> {
     
     String getBasePath();
     
-    List<String> getSourceFolderPath();
+    String getSourceFolderPath();
+    
     String getBaseDir();
+    
     default FileType getFileType() {
         return FileType.JSON;
     }
+    
     String getTargetPackage();
     
     String getPrivateConstructor();
     
     boolean isOverwriteClasses();
+    
     void throwException(final String message) throws T;
     
     default void runTask() throws T {
-        for(String path: getSourceFolderPath()) {
-            final File sourceFolder = new File(path);
-            generateClass(sourceFolder);
-        }
+        final File sourceFolder = new File(getSourceFolderPath());
+        generateClass(sourceFolder);
     }
     
     private void generateClass(final File sourceFolder) throws T {
         String splitPackage = getPathFromPackage(getTargetPackage());
-    
-        final File targetFolder = new File(getBaseDir(), getBasePath()+ splitPackage);
-    
+        
+        final File targetFolder = new File(getBaseDir(), getBasePath() + splitPackage);
+        
         if (!sourceFolder.exists()) {
             throwException("Could not find source folder." + sourceFolder.getName());
             return;
         }
-    
+        
         if (!targetFolder.exists()) {
             throwException("Could not find specified package. " + getTargetPackage() + " " + targetFolder.getPath());
             return;
         }
-    
+        
         WriteClass<?> writeClass = null;
-    
+        
         if (getFileType() == FileType.JSON)
-            writeClass = new WriteJsonClass(getTargetPackage(),getBasePath(), getPrivateConstructor(), isOverwriteClasses());
-    
+            writeClass = new WriteJsonClass(getTargetPackage(), getBasePath(), getPrivateConstructor(), isOverwriteClasses());
+        
         if (getFileType() == FileType.YAML)
             writeClass = new WriteYamlClass(getTargetPackage(), getBasePath(), getPrivateConstructor(), isOverwriteClasses());
-    
+        
         if (writeClass == null) {
             throwException("There was a problem getting the file type");
             return;
         }
-    
+        
         try {
             if (sourceFolder.isDirectory()) {
                 for (File sourceFile : Objects.requireNonNull(sourceFolder.listFiles())) {
