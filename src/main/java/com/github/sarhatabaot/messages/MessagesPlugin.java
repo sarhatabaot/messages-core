@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -19,7 +18,7 @@ public interface MessagesPlugin<T extends Exception> {
     
     String getBasePath();
     
-    String getSourceFolderPath();
+    String getSourceFolder();
     
     String getBaseDir();
     
@@ -36,7 +35,7 @@ public interface MessagesPlugin<T extends Exception> {
     void throwException(final String message) throws T;
     
     default void runTask() throws T {
-        final File sourceFolder = new File(getSourceFolderPath());
+        final File sourceFolder = new File(getSourceFolder());
         generateClass(sourceFolder);
     }
     
