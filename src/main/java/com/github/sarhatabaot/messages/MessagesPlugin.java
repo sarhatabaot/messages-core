@@ -39,7 +39,7 @@ public interface MessagesPlugin<T extends Exception> {
         generateClass(sourceFolder);
     }
     
-    private void generateClass(final File sourceFolder) throws T {
+    default void generateClass(final File sourceFolder) throws T {
         String splitPackage = getPathFromPackage(getTargetPackage());
         
         final File targetFolder = new File(getBaseDir(), getBasePath() + splitPackage);
