@@ -3,10 +3,12 @@ package com.github.sarhatabaot.messages.util
 import com.github.sarhatabaot.messages.util.Util.capitalize
 import com.github.sarhatabaot.messages.util.Util.getAsClassName
 import com.github.sarhatabaot.messages.util.Util.getAsFileName
+import com.github.sarhatabaot.messages.util.Util.getPathFromPackage
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
+import java.io.File
 
 /**
  *
@@ -38,5 +40,10 @@ class UtilTest {
 
         Assertions.assertNull(capitalize(null))
         Assertions.assertNull(capitalize(""))
+    }
+
+    @Test
+    fun getPathFromPackage() {
+        assertEquals("com${File.separator}github${File.separator}sarhatabaot", getPathFromPackage("com.github.sarhatabaot"))
     }
 }

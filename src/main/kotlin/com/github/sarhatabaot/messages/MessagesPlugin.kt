@@ -4,6 +4,7 @@ import com.github.sarhatabaot.messages.generate.WriteClass
 import com.github.sarhatabaot.messages.generate.WriteJsonClass
 import com.github.sarhatabaot.messages.generate.WriteYamlClass
 import com.github.sarhatabaot.messages.model.FileType
+import com.github.sarhatabaot.messages.util.Util
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -39,7 +40,7 @@ interface MessagesPlugin<T : Exception> {
 
     @Throws(Exception::class)
     fun generateClass(sourceFolder: File) {
-        val splitPackage = getPathFromPackage(getTargetPackage())
+        val splitPackage = Util.getPathFromPackage(getTargetPackage())
         val targetFolder = File(getBaseDir(), getBasePath() + splitPackage)
         if (!sourceFolder.exists()) {
             throwException("Could not find source folder. ${sourceFolder.name}")
@@ -73,12 +74,6 @@ interface MessagesPlugin<T : Exception> {
         }
     }
 
-    fun getPathFromPackage(targetPackage: String): String {
-        return java.lang.String.join(
-            File.separator,
-            *targetPackage.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray())
-    }
 
     companion object {
         const val BASE_PATH = "src/main/java/"
