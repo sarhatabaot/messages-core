@@ -17,15 +17,14 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.annotations)
     compileOnly(libs.slf4j.api)
     implementation(libs.kotlin.stdlib8)
 
-    //todo not sure if we need this to be exposed
-    api(libs.roaster.api)
-    api(libs.roaster.jdt)
-    api(libs.gson)
-    api(libs.snakeyaml)
+    api(libs.annotations)
+    compileOnly(libs.roaster.api)
+    compileOnly(libs.roaster.jdt)
+    compileOnly(libs.gson)
+    compileOnly(libs.snakeyaml)
 
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform)
