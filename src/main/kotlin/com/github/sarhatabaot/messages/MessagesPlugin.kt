@@ -14,32 +14,32 @@ import java.util.*
  * @author sarhatabaot
  */
 
-interface MessagesPlugin<T : Exception> {
-    fun getBasePath(): String
+abstract class MessagesPlugin<T : Exception> {
+    abstract fun getBasePath(): String
 
-    fun getSourceFolder(): String
+    abstract fun getSourceFolder(): String
 
-    fun getBaseDir(): String?
+    abstract fun getBaseDir(): String?
 
-    fun getFileType(): FileType {
+    open fun getFileType(): FileType {
         return FileType.JSON
     }
 
-    fun getTargetPackage(): String
-    fun getPrivateConstructor(): String?
-    fun isOverwriteClasses(): Boolean
+    abstract fun getTargetPackage(): String
+    abstract fun getPrivateConstructor(): String?
+    abstract fun isOverwriteClasses(): Boolean
 
     @Throws(Exception::class)
-    fun throwException(message: String?)
+    abstract fun throwException(message: String?)
 
     @Throws(Exception::class)
-    fun runTask() {
+    open fun runTask() {
         val sourceFolder = File(getSourceFolder())
         generateClass(sourceFolder)
     }
 
     @Throws(Exception::class)
-    fun generateClass(sourceFolder: File) {
+    open fun generateClass(sourceFolder: File) {
         val splitPackage = Util.getPathFromPackage(getTargetPackage())
         val targetFolder = File(getBaseDir(), getBasePath() + splitPackage)
         if (!sourceFolder.exists()) {
