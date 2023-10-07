@@ -4,7 +4,6 @@ import java.io.File
 import java.util.*
 
 /**
- *
  * @author sarhatabaot
  */
 object Util {
@@ -17,7 +16,7 @@ object Util {
         for (string in sourceFileName.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
             names.add(capitalize(string))
         }
-        return java.lang.String.join("", names)
+        return names.joinToString("")
     }
 
 
