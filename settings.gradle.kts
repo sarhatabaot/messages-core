@@ -11,7 +11,7 @@ dependencyResolutionManagement {
             version("kotlin", "1.9.22")
             library("kotlin-stdlib8","org.jetbrains.kotlin","kotlin-stdlib-jdk8").versionRef("kotlin")
 
-            version("roaster", "2.22.2.Final")
+            version("roaster", "2.29.0.Final")
             library("roaster-api", "org.jboss.forge.roaster","roaster-api").versionRef("roaster")
             library("roaster-jdt", "org.jboss.forge.roaster","roaster-jdt").versionRef("roaster")
 
