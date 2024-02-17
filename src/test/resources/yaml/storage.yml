@@ -1,0 +1,32 @@
+## Taken from TradingCards, See: https://github.com/sarhatabaot/TradingCards
+
+# Available options: YAML or MYSQL
+storage-type: YAML
+
+yaml:
+  # Default file to create & edit cards in.
+  default-file: "cards.yml"
+
+sql:
+  # Generate first time values for sql database.
+  first-time-values: false
+
+database:
+  # Address and port for the database.
+  address: localhost
+  port: 3306
+
+  # The name of the database to store TradingCards deck data in.
+  # - This must be created already.
+  database: minecraft
+
+  # Credentials for the database.
+  username: root
+  password: ''
+
+  table-prefix: 'tradingcards_'
+
+database-migration:
+  default-series-id: "default"
+
+config-version: 1
