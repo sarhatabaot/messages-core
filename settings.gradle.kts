@@ -4,7 +4,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             library("gson", "com.google.code.gson:gson:2.10.1")
-            library("snakeyaml", "org.yaml:snakeyaml:2.0")
+            library("snakeyaml", "org.yaml:snakeyaml:2.2")
             library("annotations", "org.jetbrains:annotations:24.0.1")
             library("slf4j-api", "org.slf4j:slf4j-api:2.0.7")
 
