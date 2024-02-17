@@ -15,7 +15,7 @@ import java.util.*
  */
 abstract class MessagesPlugin<T : Exception>(
     private val basePath: String = "src/main/java/",
-    val sourceFolder: String,
+    private val sourceFolder: String,
     private val baseDir: String? = null,
     private val fileType: FileType = FileType.JSON,
     private val targetPackage: String,
