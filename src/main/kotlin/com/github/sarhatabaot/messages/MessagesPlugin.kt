@@ -13,7 +13,7 @@ import java.util.*
  *
  * @author sarhatabaot
  */
-class MessagesPlugin<T : Exception>(
+open class MessagesPlugin<T : Exception>(
     var basePath: String = "src/main/java/",
     var sourceFolder: String,
     var baseDir: String? = null,
