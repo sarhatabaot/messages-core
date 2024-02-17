@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.9.10"
+    kotlin("jvm") version(libs.versions.kotlin)
     id("java-library")
     id("maven-publish")
     jacoco
@@ -18,13 +18,14 @@ repositories {
 
 dependencies {
     compileOnly(libs.slf4j.api)
-    implementation(libs.kotlin.stdlib8)
-
-    api(libs.annotations)
     compileOnly(libs.roaster.api)
     compileOnly(libs.roaster.jdt)
     compileOnly(libs.gson)
     compileOnly(libs.snakeyaml)
+
+    implementation(libs.kotlin.stdlib8)
+
+    api(libs.annotations)
 
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform)

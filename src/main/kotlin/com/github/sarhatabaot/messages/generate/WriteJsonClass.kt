@@ -34,15 +34,15 @@ class WriteJsonClass(
     override fun getRootEntrySet(file: File?): Set<Map.Entry<String, JsonElement>> {
         val reader = JsonReader(file?.let { FileReader(it) })
         val rootElement = JsonParser.parseReader(reader)
-        return rootElement.getAsJsonObject().entrySet()
+        return rootElement.asJsonObject.entrySet()
     }
 
     override fun getEntrySetFromValue(value: JsonElement): Set<Map.Entry<String, JsonElement>> {
-        return value.getAsJsonObject().entrySet()
+        return value.asJsonObject.entrySet()
     }
 
     override fun getEntryValue(value: JsonElement): TypeKeyValue {
-        val primitive = value.getAsJsonPrimitive()
+        val primitive = value.asJsonPrimitive
 
         return if (primitive.isNumber) {
             try {
@@ -56,7 +56,7 @@ class WriteJsonClass(
 
     override fun getAsStringArray(value: JsonElement): Array<String> {
         val stringList: MutableList<String> = ArrayList()
-        val jsonElements = value.getAsJsonArray()
+        val jsonElements = value.asJsonArray
         for (element in jsonElements) {
             stringList.add(element.asString)
         }

@@ -5,14 +5,7 @@ package com.github.sarhatabaot.messages.model
  * @author sarhatabaot
  */
 
-class TypeKeyValue(clazz: Class<*>, value: String) {
-    private val clazz: Class<*>
-    private val value: String
-
-    init {
-        this.clazz = clazz
-        this.value = value
-    }
+class TypeKeyValue(private val clazz: Class<*>, private val value: String) {
 
     /**
      * Returns the value to set.
