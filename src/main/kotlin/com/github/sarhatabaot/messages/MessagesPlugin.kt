@@ -14,13 +14,13 @@ import java.util.*
  * @author sarhatabaot
  */
 abstract class MessagesPlugin<T : Exception>(
-    private val basePath: String = "src/main/java/",
-    private val sourceFolder: String,
-    private val baseDir: String? = null,
-    private val fileType: FileType = FileType.JSON,
-    private val targetPackage: String,
-    private val privateConstructor: String? = null,
-    private val overwriteClasses: Boolean = true
+    private var basePath: String = "src/main/java/",
+    private var sourceFolder: String,
+    private var baseDir: String? = null,
+    private var fileType: FileType = FileType.JSON,
+    private var targetPackage: String,
+    private var privateConstructor: String? = null,
+    private var overwriteClasses: Boolean = true
 ) {
 
     @Throws(Exception::class)
