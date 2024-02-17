@@ -13,7 +13,7 @@ import java.util.*
  *
  * @author sarhatabaot
  */
-abstract class MessagesPlugin<T : Exception>(
+class MessagesPlugin<T : Exception>(
     var basePath: String = "src/main/java/",
     var sourceFolder: String,
     var baseDir: String? = null,
@@ -24,18 +24,18 @@ abstract class MessagesPlugin<T : Exception>(
 ) {
 
     @Throws(Exception::class)
-    open fun throwException(message: String?) {
+    fun throwException(message: String?) {
         throw Exception(message)
     }
 
     @Throws(Exception::class)
-    open fun runTask() {
+    fun runTask() {
         val sourceFolder = File(sourceFolder)
         generateClass(sourceFolder)
     }
 
     @Throws(Exception::class)
-    open fun generateClass(sourceFolder: File) {
+    fun generateClass(sourceFolder: File) {
         val splitPackage = Util.getPathFromPackage(targetPackage)
         val targetFolder = File(baseDir, basePath + splitPackage)
         if (!sourceFolder.exists()) {
