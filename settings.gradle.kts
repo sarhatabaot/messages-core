@@ -8,7 +8,7 @@ dependencyResolutionManagement {
             library("annotations", "org.jetbrains:annotations:24.1.0")
             library("slf4j-api", "org.slf4j:slf4j-api:2.0.12")
 
-            version("kotlin", "1.9.22")
+            version("kotlin", "2.0.21")
             library("kotlin-stdlib8","org.jetbrains.kotlin","kotlin-stdlib-jdk8").versionRef("kotlin")
 
             version("roaster", "2.22.2.Final")
