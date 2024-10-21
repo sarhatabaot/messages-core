@@ -15,7 +15,7 @@ dependencyResolutionManagement {
             library("roaster-api", "org.jboss.forge.roaster","roaster-api").versionRef("roaster")
             library("roaster-jdt", "org.jboss.forge.roaster","roaster-jdt").versionRef("roaster")
 
-            library("junit-jupiter","org.junit.jupiter:junit-jupiter:5.10.2")
+            library("junit-jupiter","org.junit.jupiter:junit-jupiter:5.11.3")
             library("junit-platform", "org.junit.platform","junit-platform-launcher").withoutVersion()
         }
     }
