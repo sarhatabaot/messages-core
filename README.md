@@ -1,3 +1,15 @@
+> [!WARNING]
+> **Project Status: Archived**
+>
+> This project is now **archived**.
+>
+> It will remain available, but I don't have any plans to continue developing or maintaining it. While I may occasionally stop by, you should assume there won't be any future updates or releases.
+>
+> Feel free to fork the project or build upon it if you'd like to take it further.
+>
+> Thank you to everyone who has been part of this project over the years. It's been fun, and I appreciate all the feedback, bug reports, and contributions ❤️
+
+
 # Messages
 ### Core library for https://github.com/sarhatabaot/messages-maven-plugin , https://github.com/sarhatabaot/messages-gradle-plugin
 
